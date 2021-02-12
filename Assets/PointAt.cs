@@ -49,7 +49,7 @@ public class PointAt : MonoBehaviour
             transform.rotation = prevRot; // revert rotation
 
             // animate rotation
-            transform.localRotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(euler2), .01f);
+            transform.localRotation = AnimMath.Slide(transform.localRotation, Quaternion.Euler(euler2), .01f);
         }
         else
         {

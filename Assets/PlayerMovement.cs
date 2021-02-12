@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // turn to face the correct direction...
             float camYaw = cam.transform.eulerAngles.y;
-            transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(0, camYaw, 0), 0.5f);
+            transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(0, camYaw, 0), 0.02f);
         }
 
         Vector3 inputDirection = transform.forward * v + transform.right * h;
