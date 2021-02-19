@@ -31,7 +31,7 @@ public class PointAt : MonoBehaviour
 
     private void TurnTowardsTarget()
     {
-        if (playerTargeting && playerTargeting.target)
+        if (playerTargeting && playerTargeting.target && playerTargeting.wantsToTarget)
         {
             Vector3 disToTarget = playerTargeting.target.position - transform.position;
 
@@ -54,7 +54,6 @@ public class PointAt : MonoBehaviour
         else
         {
             // figure out bone rotation with no target:
-            Quaternion targetRotation = Quaternion.LookRotation(naturalAimDirection, Vector3.up);
             transform.localRotation = AnimMath.Slide(transform.localRotation, startingRotation, .1f);
         }
     }

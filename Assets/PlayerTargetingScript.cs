@@ -8,6 +8,7 @@ public class PlayerTargetingScript : MonoBehaviour
     public Transform target;
     public bool wantsToTarget = false;
     public float visionDistance = 10;
+    public float visionAngle = 45;
     private List<TargetObject> potentialTargets = new List<TargetObject>();
     float cooldownScan = 0;
     float cooldownPick = 0;
@@ -23,11 +24,30 @@ public class PlayerTargetingScript : MonoBehaviour
     {
         wantsToTarget = Input.GetButton("Fire2");
 
+        if (!wantsToTarget) target = null;
+
         cooldownScan -= Time.deltaTime;
-        if (cooldownScan <= 0) ScanForTargets();
+        if (cooldownScan <= 0 || (target == null && wantsToTarget)) ScanForTargets();
 
         cooldownPick -= Time.deltaTime;
         if (cooldownPick <= 0) PickATarget();
+
+        if (target && !CanSeeThing(target)) target = null;
+    }
+    
+    private bool CanSeeThing(Transform thing)
+    {
+        if (!thing) return false; // uh... error
+
+        Vector3 vToThing = thing.position - transform.position;
+
+        if (vToThing.sqrMagnitude > visionDistance * visionDistance) return false; // too far away to see...
+
+        if(Vector3.Angle(transform.forward, vToThing) > visionAngle) return false; // out of vision "cone"
+
+        // TODO: check occlusion
+
+        return true;
     }
 
     private void ScanForTargets()
@@ -41,16 +61,7 @@ public class PlayerTargetingScript : MonoBehaviour
         //refill the list
         foreach(TargetObject thing in things)
         {
-            // check how far away thing is
-            Vector3 disToThing = thing.transform.position - transform.position;
-
-            if(disToThing.sqrMagnitude < visionDistance * visionDistance)
-            {
-                if (Vector3.Angle(transform.forward, disToThing) < 45)
-                {
-                    potentialTargets.Add(thing);
-                }
-            }
+            if (CanSeeThing(thing.transform)) potentialTargets.Add(thing);
 
             // check what direction it is in
         }
@@ -60,11 +71,11 @@ public class PlayerTargetingScript : MonoBehaviour
     {
         cooldownPick = 0.25f;
 
-        if (target != null) return; // we already have a target...
+        target = null; // we already have a target...
 
         float closestDistanceSoFar = 0;
 
-        foreach(var pt in potentialTargets)
+        foreach(TargetObject pt in potentialTargets)
         {
             float dd = (pt.transform.position - transform.position).sqrMagnitude;
 

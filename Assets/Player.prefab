@@ -608,6 +608,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   walkSpeed: 5
+  leg1: {fileID: 6173175664530787011}
+  leg2: {fileID: 5460884378983585259}
 --- !u!114 &-3017606704212291507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,6 +625,7 @@ MonoBehaviour:
   target: {fileID: 0}
   wantsToTarget: 0
   visionDistance: 10
+  visionAngle: 45
 --- !u!1 &5781536133227167635
 GameObject:
   m_ObjectHideFlags: 0
