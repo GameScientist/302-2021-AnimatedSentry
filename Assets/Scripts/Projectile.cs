@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
             HealthSystem playerHealth = player.GetComponent<HealthSystem>();
             if (playerHealth)
             {
-                playerHealth.TakeDamage(10); // do damage to player
+                playerHealth.TakeDamage(); // do damage to player
             }
             Destroy(gameObject); // remove projectile from game
         }

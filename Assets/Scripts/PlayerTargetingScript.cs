@@ -83,7 +83,7 @@ public class PlayerTargetingScript : MonoBehaviour
         HealthSystem targetHealth = target.GetComponent<HealthSystem>();
         if (targetHealth)
         {
-            targetHealth.TakeDamage(20);
+            targetHealth.TakeDamage();
         }
 
         print("PEW");
