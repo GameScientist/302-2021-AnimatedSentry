@@ -14,7 +14,21 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 inputDirection = new Vector3();
 
+    private float timeLeftGrounded = 0;
+
     private float verticalVelocity = 0;
+
+    private bool isJumpHeld = false;
+
+    public float jumpImpulse = 20;
+
+    public bool isGrounded
+    {
+        get
+        { // return true is pawn is on ground OR "coyote time"
+            return pawn.isGrounded || timeLeftGrounded > 0;
+        }
+    }
 
     void Start()
     {
@@ -26,8 +40,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // countdown
+        if (timeLeftGrounded > 0) timeLeftGrounded -= Time.deltaTime;
+
         MovePlayer();
-        WiggleLegs();
+        if (pawn.isGrounded) WiggleLegs();
+        else AirLegs(); // jump / falling
     }
 
     private void WiggleLegs()
@@ -59,6 +77,12 @@ public class PlayerMovement : MonoBehaviour
         leg2.localRotation = AnimMath.Slide(leg2.localRotation, Quaternion.AngleAxis(-wave, axis), .001f);
     }
 
+    private void AirLegs()
+    {
+        leg1.localRotation = AnimMath.Slide(Quaternion.Euler(0, 0, 0), Quaternion.Euler(30, 0, 0));
+        leg1.localRotation = AnimMath.Slide(Quaternion.Euler(0, 0, 0), Quaternion.Euler(-30, 0, 0));
+    }
+
     private void MovePlayer()
     {
         float h = Input.GetAxis("Horizontal"); // Strafing
@@ -76,17 +100,30 @@ public class PlayerMovement : MonoBehaviour
 
         if (inputDirection.sqrMagnitude > 1) inputDirection.Normalize();
 
+        if (Input.GetButtonDown("Jump")) isJumpHeld = true;
+
         // apply gravity:
         verticalVelocity += 10 * Time.deltaTime;
 
         // adds lateral movement to vertical movement
-        Vector3 moveDelta = inputDirection * walkSpeed * Time.deltaTime + verticalVelocity * Vector3.down;
+        Vector3 moveDelta = inputDirection * walkSpeed + verticalVelocity * Vector3.down;
 
         CollisionFlags flags = pawn.Move(moveDelta * Time.deltaTime); // 0, -1, 0
 
-        if((flags & CollisionFlags.CollidedBelow)> 0)
+        if (pawn.isGrounded)
         {
             verticalVelocity = 0; // on ground, zero-out gravity below.
+            timeLeftGrounded = 0.16f;
+        }
+
+        if(isGrounded)
+        {
+
+            if (isJumpHeld)
+            {
+                verticalVelocity = -jumpImpulse;
+                timeLeftGrounded = 0; // not on ground (for animation's sake)
+            }
         }
     }
 }
