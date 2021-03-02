@@ -7,12 +7,16 @@ public class SentryTurret : MonoBehaviour
     public HealthSystem health;
     public string state;
     public Transform rotator;
-    public Transform barrel;
     public Transform leg1;
     public Transform leg2;
     public Transform leg3;
     public Transform leg4;
     public Transform end;
+
+    public Rigidbody basePrefab;
+    public Rigidbody rotatorPrefab;
+    public Rigidbody barrelPrefab;
+    public Rigidbody legPrefab;
 
     public Transform player;
 
@@ -23,7 +27,7 @@ public class SentryTurret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        health = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -31,6 +35,8 @@ public class SentryTurret : MonoBehaviour
     {
         if (cooldown < 1) cooldown += Time.deltaTime;
         else cooldown = 1;
+
+        if (health.dead) state = "Destroyed";
         print(state);
             switch (state)
         {
@@ -66,6 +72,35 @@ public class SentryTurret : MonoBehaviour
                 
                 break;
             case "Destroyed":
+                Rigidbody baseGib;
+                baseGib = Instantiate(basePrefab, transform);
+                baseGib.transform.SetParent(null);
+                baseGib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody rotatorGib;
+                rotatorGib = Instantiate(rotatorPrefab, transform);
+                rotatorGib.transform.SetParent(null);
+                rotatorGib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody barrelGib;
+                barrelGib = Instantiate(barrelPrefab, transform);
+                barrelGib.transform.SetParent(null);
+                barrelGib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody leg1Gib;
+                leg1Gib = Instantiate(legPrefab, transform);
+                leg1Gib.transform.SetParent(null);
+                leg1Gib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody leg2Gib;
+                leg2Gib = Instantiate(legPrefab, transform);
+                leg2Gib.transform.SetParent(null);
+                leg2Gib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody leg3Gib;
+                leg3Gib = Instantiate(legPrefab, transform);
+                leg3Gib.transform.SetParent(null);
+                leg3Gib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Rigidbody leg4Gib;
+                leg4Gib = Instantiate(legPrefab, transform);
+                leg4Gib.transform.SetParent(null);
+                leg4Gib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                Destroy(gameObject);
                 break;
         }
     }

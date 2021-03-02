@@ -98,7 +98,6 @@ public class PlayerMovement : MonoBehaviour
                 Destroy(leg2);
                 PlayerTargetingScript targeting = GetComponent<PlayerTargetingScript>();
                 Destroy(targeting);
-                print("gibbed");
             }
         }
 
