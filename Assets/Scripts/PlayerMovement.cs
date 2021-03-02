@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isJumpHeld = false;
 
-    public float jumpImpulse = 20;
+    private float jumpImpulse = 10;
 
     private bool gibbed = false;
 
@@ -107,9 +107,10 @@ public class PlayerMovement : MonoBehaviour
             if (timeLeftGrounded > 0) timeLeftGrounded -= Time.deltaTime;
 
             MovePlayer();
-            if (pawn.isGrounded) WiggleLegs();
+            if (isGrounded) WiggleLegs();
             else AirLegs(); // jump / falling
         }
+        print(isGrounded);
     }
 
     private void WiggleLegs()
@@ -143,8 +144,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void AirLegs()
     {
-        legBone1.localRotation = AnimMath.Slide(Quaternion.Euler(0, 0, 0), Quaternion.Euler(30, 0, 0));
-        legBone2.localRotation = AnimMath.Slide(Quaternion.Euler(0, 0, 0), Quaternion.Euler(-30, 0, 0));
+        legBone1.localRotation = AnimMath.Slide(legBone1.localRotation, Quaternion.Euler(30, 0, 0));
+        legBone2.localRotation = AnimMath.Slide(legBone2.localRotation, Quaternion.Euler(-30, 0, 0));
     }
 
     private void MovePlayer()
@@ -165,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
         if (inputDirection.sqrMagnitude > 1) inputDirection.Normalize();
 
         if (Input.GetButtonDown("Jump")) isJumpHeld = true;
+        else isJumpHeld = false;
 
         // apply gravity:
         verticalVelocity += 10 * Time.deltaTime;
@@ -174,14 +176,11 @@ public class PlayerMovement : MonoBehaviour
 
         CollisionFlags flags = pawn.Move(moveDelta * Time.deltaTime); // 0, -1, 0
 
-        if (pawn.isGrounded)
-        {
-            verticalVelocity = 0; // on ground, zero-out gravity below.
-            timeLeftGrounded = 0.16f;
-        }
 
         if(isGrounded)
         {
+            verticalVelocity = 0; // on ground, zero-out gravity below.
+            timeLeftGrounded = 0.16f;
 
             if (isJumpHeld)
             {
