@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class SentryTurret : MonoBehaviour
 {
+    public HealthSystem health;
     public string state;
     public Transform rotator;
+    public Transform barrel;
     public Transform leg1;
     public Transform leg2;
     public Transform leg3;
     public Transform leg4;
+    public Transform end;
 
     public Transform player;
+
+    public ParticleSystem flash;
+
+    private float cooldown = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -22,9 +29,9 @@ public class SentryTurret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (cooldown < 1) cooldown += Time.deltaTime;
+        else cooldown = 1;
         print(state);
-        //cooldownScan -= Time.deltaTime;
-        //if (cooldownScan <= 0 || target == null) ScanForTargets();
             switch (state)
         {
             case "Idle":
@@ -41,10 +48,22 @@ public class SentryTurret : MonoBehaviour
                 leg2.localPosition = (-0.25f * transform.right) - (transform.up * ((Mathf.Cos(Time.time*25)+1)/2)) + (0.25f * transform.forward);
                 leg3.localPosition = (0.25f * transform.right) - (transform.up * ((Mathf.Sin(Time.time*25 + 1)+1)/2)) + (-0.25f * transform.forward);
                 leg4.localPosition = (-0.25f * transform.right) - (transform.up * ((Mathf.Cos(Time.time*25 + 1)+1)/2)) + (-0.25f * transform.forward);
+                rotator.rotation = AnimMath.Slide(rotator.rotation, Quaternion.LookRotation(player.position - transform.position, -Vector3.up));
                 break;
             case "Fire":
-                Vector3 disToTarget = player.position - transform.position;
-                rotator.rotation = AnimMath.Slide(rotator.rotation, Quaternion.LookRotation(disToTarget, -Vector3.up));
+                rotator.rotation = AnimMath.Slide(rotator.rotation, Quaternion.LookRotation(player.position - transform.position, -Vector3.up));
+
+                if (cooldown == 1)
+                {
+                    Instantiate(flash, end.position, end.rotation);
+                    HealthSystem playerHealth = player.GetComponent<HealthSystem>();
+                    if (playerHealth)
+                    {
+                        playerHealth.TakeDamage();
+                    }
+                    cooldown = 0;
+                }
+                
                 break;
             case "Destroyed":
                 break;
