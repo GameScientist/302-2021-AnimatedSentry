@@ -49,7 +49,7 @@ public class SentryTurret : MonoBehaviour
                 leg4.localPosition = (-0.25f * transform.right) + transform.up * AnimMath.Slide(leg4.localPosition.y, 0, 0.1f) + (-0.25f * transform.forward);
                 break;
             case "Walk":
-                transform.position = (Mathf.MoveTowards(transform.position.x, player.position.x, Time.deltaTime) * transform.right) + (transform.up * AnimMath.Slide(transform.position.y, 1.25f, 0.1f)) + (Mathf.MoveTowards(transform.position.z, player.position.z, Time.deltaTime) * transform.forward);
+                transform.position = (Mathf.MoveTowards(transform.position.x, player.position.x, Time.deltaTime * 5) * transform.right) + (transform.up * AnimMath.Slide(transform.position.y, 1.25f, 0.1f)) + (Mathf.MoveTowards(transform.position.z, player.position.z, Time.deltaTime * 5) * transform.forward);
                 leg1.localPosition = (0.25f * transform.right) - (transform.up * ((Mathf.Sin(Time.time*25)+1)/2)) + (0.25f* transform.forward);
                 leg2.localPosition = (-0.25f * transform.right) - (transform.up * ((Mathf.Cos(Time.time*25)+1)/2)) + (0.25f * transform.forward);
                 leg3.localPosition = (0.25f * transform.right) - (transform.up * ((Mathf.Sin(Time.time*25 + 1)+1)/2)) + (-0.25f * transform.forward);

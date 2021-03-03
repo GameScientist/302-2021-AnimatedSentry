@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool gibbed = false;
 
+    public ParticleSystem blood;
+
     public bool isGrounded
     {
         get
@@ -98,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
                 Destroy(leg2);
                 PlayerTargetingScript targeting = GetComponent<PlayerTargetingScript>();
                 Destroy(targeting);
+                Instantiate(blood, transform);
             }
         }
 
