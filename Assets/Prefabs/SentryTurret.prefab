@@ -999,6 +999,7 @@ MonoBehaviour:
   legPrefab: {fileID: 366989138015220850, guid: e1eddf11146607a45b654e305d2e6768, type: 3}
   player: {fileID: 0}
   flash: {fileID: 753378093796171183, guid: 2efdc70a2c396fe49a285ccbfa213bec, type: 3}
+  explosion: {fileID: 6644714299314992005, guid: 0f589d90c6008d8459010a7b70a01674, type: 3}
 --- !u!114 &4373333305788694103
 MonoBehaviour:
   m_ObjectHideFlags: 0

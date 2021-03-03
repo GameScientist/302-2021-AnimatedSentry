@@ -21,6 +21,7 @@ public class SentryTurret : MonoBehaviour
     public Transform player;
 
     public ParticleSystem flash;
+    public ParticleSystem explosion;
 
     private float cooldown = 0;
 
@@ -100,6 +101,9 @@ public class SentryTurret : MonoBehaviour
                 leg4Gib = Instantiate(legPrefab, transform);
                 leg4Gib.transform.SetParent(null);
                 leg4Gib.velocity = transform.TransformDirection((transform.up * Random.Range(-1f, 1f)) + (transform.right * Random.Range(-1f, 1f)) + (transform.forward * Random.Range(-1f, 1f)));
+                ParticleSystem explosionGib;
+                explosionGib = Instantiate(explosion, transform.position, Quaternion.Euler(-90, 0, 0));
+                explosionGib.transform.SetParent(null);
                 Destroy(gameObject);
                 break;
         }
