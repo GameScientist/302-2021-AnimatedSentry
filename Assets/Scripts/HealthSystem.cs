@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
+    public AudioManager audioManager;
+
     public float health { get; private set; }
     public float healthMax = 100;
 
@@ -18,7 +20,10 @@ public class HealthSystem : MonoBehaviour
     {
         health--;
 
-        if (health <= 0) dead = true;
+        if (health <= 0)
+        {
+            dead = true;
+        }
     }
 
     public void Die()

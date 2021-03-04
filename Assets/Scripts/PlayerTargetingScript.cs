@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerTargetingScript : MonoBehaviour
 {
+    public AudioManager audioManager;
     public Transform target;
     public bool wantsToTarget = false;
     public bool wantsToAttack = false;
@@ -86,7 +87,8 @@ public class PlayerTargetingScript : MonoBehaviour
             targetHealth.TakeDamage();
         }
 
-        print("PEW");
+        audioManager.Play("Gun Fire");
+        audioManager.Play("Sentry Turret Impact");
         cooldownShoot = 1 / roundsPerSecond;
 
         // attack!

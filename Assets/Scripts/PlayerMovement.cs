@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public AudioManager audioManager;
+
     public HealthSystem health;
     public Camera cam;
     private CharacterController pawn;
@@ -54,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         pawn = GetComponent<CharacterController>();
         health = GetComponent<HealthSystem>();
         Cursor.lockState = CursorLockMode.Locked;
+        audioManager.Play("Buzzer");
     }
 
     // Update is called once per frame
@@ -101,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
                 PlayerTargetingScript targeting = GetComponent<PlayerTargetingScript>();
                 Destroy(targeting);
                 Instantiate(blood, transform);
+                audioManager.Play("Player Death");
             }
         }
 
@@ -113,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded) WiggleLegs();
             else AirLegs(); // jump / falling
         }
-        print(isGrounded);
     }
 
     private void WiggleLegs()

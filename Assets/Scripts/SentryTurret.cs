@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SentryTurret : MonoBehaviour
 {
+    public AudioManager audioManager;
     public HealthSystem health;
     public string state;
     public Transform rotator;
@@ -57,6 +58,7 @@ public class SentryTurret : MonoBehaviour
                 leg4.localPosition = (-0.25f * transform.right) - (transform.up * ((Mathf.Cos(Time.time*25 + 1)+1)/2)) + (-0.25f * transform.forward);
                 rotator.rotation = AnimMath.Slide(rotator.rotation, Quaternion.LookRotation(player.position - transform.position, -Vector3.up));
                 break;
+
             case "Fire":
                 rotator.rotation = AnimMath.Slide(rotator.rotation, Quaternion.LookRotation(player.position - transform.position, -Vector3.up));
 
@@ -67,6 +69,9 @@ public class SentryTurret : MonoBehaviour
                     if (playerHealth)
                     {
                         playerHealth.TakeDamage();
+                        audioManager.Play("Gun Fire");
+                        audioManager.Play("Blood Spurt");
+                        audioManager.Play("Player Damage");
                     }
                     cooldown = 0;
                 }
@@ -104,6 +109,8 @@ public class SentryTurret : MonoBehaviour
                 ParticleSystem explosionGib;
                 explosionGib = Instantiate(explosion, transform.position, Quaternion.Euler(-90, 0, 0));
                 explosionGib.transform.SetParent(null);
+                audioManager.Play("Explosion");
+                audioManager.Play("Electric Sparks 1");
                 Destroy(gameObject);
                 break;
         }
