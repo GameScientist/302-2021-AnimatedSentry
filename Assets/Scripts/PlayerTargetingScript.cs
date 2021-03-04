@@ -3,38 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Allows the player to lock-on to and fire at enemies.
+/// </summary>
 public class PlayerTargetingScript : MonoBehaviour
 {
-    public AudioManager audioManager;
-    public Transform target;
-    public bool wantsToTarget = false;
-    public bool wantsToAttack = false;
-    public float visionDistance = 10;
-    public float visionAngle = 45;
-    private List<TargetObject> potentialTargets = new List<TargetObject>();
-    float cooldownScan = 0;
-    float cooldownPick = 0;
+    public AudioManager audioManager; // Stores all of the sound produced by player gunfire.
+    public Transform target; // The enemy the player is currently targetting.
+    public bool wantsToTarget = false; // Tracks if the player is trying lock on to an enemy.
+    public bool wantsToAttack = false; // Tracks if the player is trying to fire at an enemy.
+    public float visionDistance = 10; // How far the player can lock on to an enemy from.
+    public float visionAngle = 45; // Controls the cone from the camera in which the player can select a target from.
+    private List<TargetObject> potentialTargets = new List<TargetObject>(); // The list of all of the objects in the area the player can target.
+    float cooldownScan = 0; // How long the player has to wait before scanning for a new target.
+    float cooldownPick = 0; // How long the player has to wait before picking a new target.
 
-    float cooldownShoot = 0;
+    float cooldownShoot = 0; // How long the player has to wait in between shots.
 
-    public float roundsPerSecond = 10;
+    public float roundsPerSecond = 10; // How many times the player can fire their weapon per second.
 
     // references to the player's arm "bones":
     public Transform armL;
     public Transform armR;
 
+    // References the position the arms must always return to.
     private Vector3 startPosArmL;
     private Vector3 startPosArmR;
 
-    public ParticleSystem prefabMuzzleFlash;
+    public ParticleSystem prefabMuzzleFlash; // The particle system that emits from the gun when firing.
 
+    // Where the particle system is emitted from.
     public Transform handL;
     public Transform handR;
 
-    public CameraOrbit camOrbit;
+    public CameraOrbit camOrbit; // References the camera that must be shaked when the player fires their gun.
 
     // Start is called before the first frame update
-    void Start()
+    void Start() // Sets the arm start positions and gets the camera orbit.
     {
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -45,7 +50,7 @@ public class PlayerTargetingScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() // Registers player input.
     {
         wantsToTarget = Input.GetButton("Fire2");
         wantsToAttack = Input.GetButton("Fire1");
@@ -67,13 +72,13 @@ public class PlayerTargetingScript : MonoBehaviour
         DoAttack();
     }
 
-    private void SlideArmsHome()
+    private void SlideArmsHome() // Returns arms to their start positions after moving.
     {
         armL.localPosition = AnimMath.Slide(armL.localPosition, startPosArmL, .01f);
         armR.localPosition = AnimMath.Slide(armR.localPosition, startPosArmR, .01f);
     }
     
-    private void DoAttack()
+    private void DoAttack() // Fires the player's weapons, damaging whatever has been locked onto.
     {
         if (cooldownShoot > 0) return; 
         if (!wantsToTarget) return; // player not targeting
@@ -108,7 +113,7 @@ public class PlayerTargetingScript : MonoBehaviour
         armR.position += -armR.transform.forward * .1f;
     }
 
-    private bool CanSeeThing(Transform thing)
+    private bool CanSeeThing(Transform thing) // Ddecides whether a target is within the player's line of sight.
     {
         if (!thing) return false; // uh... error
 
@@ -123,7 +128,7 @@ public class PlayerTargetingScript : MonoBehaviour
         return true;
     }
 
-    private void ScanForTargets()
+    private void ScanForTargets() // Compiles a list of targets based on the targets the player can see.
     {
         cooldownScan = 1; // do the next scan in 2 seconds.
         TargetObject[] things = GameObject.FindObjectsOfType<TargetObject>();
@@ -140,7 +145,7 @@ public class PlayerTargetingScript : MonoBehaviour
         }
     }
 
-    void PickATarget()
+    void PickATarget() // Locks on to the closest enemy in the player's line of sight.
     {
         cooldownPick = 0.25f;
 

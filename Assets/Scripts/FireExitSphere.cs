@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// When the player enters this sphere, the turret will stop firing at the player and try to get within a better distance.
+/// </summary>
 public class FireExitSphere : MonoBehaviour
 {
     private SentryTurret sentry;

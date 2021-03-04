@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Upon exit, the turret will lose track of the player.
+/// </summary>
 public class WalkExitSphere : MonoBehaviour
 {
     private SentryTurret sentry;

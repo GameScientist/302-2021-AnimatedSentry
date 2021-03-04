@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// When this sphere is triggered, the turret opens fire on the player.
+/// </summary>
 public class FireEnterSphere : MonoBehaviour
 {
     private SentryTurret sentry;

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Upon entry, the turret will notice the player and move towards it to attack it.
+/// </summary>
 public class WalkEnterSphere : MonoBehaviour
 {
     private SentryTurret sentry;
@@ -9,7 +11,6 @@ public class WalkEnterSphere : MonoBehaviour
     void Start()
     {
         sentry = GetComponentInParent<SentryTurret>();
-        print(sentry);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,23 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Moves the player's arms and body based on if they are locking onto an enemy or not.
+/// </summary>
 public class PointAt : MonoBehaviour
 {
 
-    public Transform target;
-    private PlayerTargetingScript playerTargeting;
+    public Transform target; // The object the player is pointing at.
+    private PlayerTargetingScript playerTargeting; // Worked with to tell if the player is locking onto a target and what that target would be.
 
     public Vector3 naturalAimDirection;
 
-    private Quaternion startingRotation;
+    private Quaternion startingRotation; // The original rotation the player's arms are at.
 
+    // The player's arms cannot move past these rotations.
     public bool lockRotationX;
     public bool lockRotationY;
     public bool lockRotationZ;
 
     // Start is called before the first frame update
-    void Start()
+    void Start() // Sets the starting rotation and player targeting script.
     {
         startingRotation = transform.localRotation;
         playerTargeting = GetComponentInParent<PlayerTargetingScript>();
@@ -29,7 +32,7 @@ public class PointAt : MonoBehaviour
         TurnTowardsTarget();
     }
 
-    private void TurnTowardsTarget()
+    private void TurnTowardsTarget() // Turns arms and body to face target.
     {
         if (playerTargeting && playerTargeting.target && playerTargeting.wantsToTarget)
         {

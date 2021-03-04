@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class CameraOrbit : MonoBehaviour
 {
-    public PlayerMovement moveScript;
-    private PlayerTargetingScript targetingScript;
-    private Camera cam;
+    public PlayerMovement moveScript; // Referenced so that there is a target for the camera to orbit.
+    private PlayerTargetingScript targetingScript; // The status of the player's lock-on is referenced to change the camera accordingly.
+    private Camera cam; // The camera that is attached to the rig.
 
     private float yaw = 0;
     private float pitch = 0;
 
-    public float cameraSensitivityX = 1;
-    public float cameraSensitivityY = 1;
+    public float cameraSensitivityX = 1; // How quickly the player can move the camera horizontally.
+    public float cameraSensitivityY = 1; // How quickly the player can move the camera vertically.
 
-    public float shakeIntensity = 0;
+    public float shakeIntensity = 0; // The current amount the camera is shaking.
 
     // Start is called before the first frame update
-    private void Start()
+    private void Start() // Get targeting and cam scripts.
     {
         targetingScript = moveScript.GetComponent<PlayerTargetingScript>();
         cam = GetComponentInChildren<Camera>();
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() // Cycles through each of this scripts functions.
     {
         PlayerOrbitCamera();
 
@@ -88,7 +88,7 @@ public class CameraOrbit : MonoBehaviour
         }
     }
 
-    private void PlayerOrbitCamera()
+    private void PlayerOrbitCamera() // Rotates the camera around the player based on user input.
     {
         float mx = Input.GetAxisRaw("Mouse X");
         float my = Input.GetAxisRaw("Mouse Y");
